@@ -23,7 +23,7 @@ test.describe("Login", () => {
     // await page.waitForTimeout(5000)
   })
 
-  test('login with locked out user @temp @regression', async ({ page }) => {
+  test('login with locked out user @regression', async ({ page }) => {
     const loginPage = new LoginPage(page)
 
     const userName = credencials.locked_out_user.userName
