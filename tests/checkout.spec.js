@@ -25,15 +25,14 @@ test.describe("Check Out", () => {
         expect(loginPage.loginButton).not.toBeVisible()
     })
 
-    test('Going to the PDP of a product @temp', async ({ page }) => {
+    test('Going to the PDP of a product and Add the product to the Cart @regression', async ({ page }) => {
         const homePage = new HomePage(page)
+        const cartPage = new CartPage(page)
         const pdpPage = new PDPPage(page)
 
         expect(homePage.headerLabel).toBeVisible()
 
         const elementText = items[0]
-
-        // await page.pause()
 
         const itemElement = await homePage.findItemByName(elementText)
         expect(itemElement).toBeVisible()
@@ -41,9 +40,16 @@ test.describe("Check Out", () => {
         await homePage.clickItemByName(elementText)
 
         expect(pdpPage.backToProductsButton).toBeVisible()
+
+        await pdpPage.addItemToCart("add-to-cart-sauce-labs-backpack")
+
+        await pdpPage.goToCart()
+
+        const cartItem = await cartPage.checkCartItemByName(elementText)
+        expect(cartItem).toBeVisible()
     })
 
-    test('Adding a product to the cart throught the Home Page @regressive', async ({ page }) => {
+    test('Adding a product to the cart throught the Home Page @regression', async ({ page }) => {
         const homePage = new HomePage(page)
         const cartPage = new CartPage(page)
 
