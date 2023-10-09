@@ -5,62 +5,109 @@ const LoginPage = require("./pages/loginPage.page")
 const HomePage = require("./pages/homePage.page")
 const CartPage = require("./pages/cartPage.page")
 const PDPPage = require("./pages/pdpPage.page")
+const CheckoutPage = require("./pages/checkoutPage.page")
 
 const credencials = require("./fixtures/credentials.json")
 const items = require("./fixtures/productContainerTexts.json")
+const exp = require('constants')
 
 const BASE_URL = process.env.BASE_URL
 
-test.describe("Check Out", () => {
+test.describe("Customer Buys a Product", () => {
 
-    test.beforeEach(async ({ page }) => {
-        await page.goto(BASE_URL)
+    test.describe("Customer Puts a Product in the Cart", () => {
 
-        const loginPage = new LoginPage(page)
+        test.beforeEach(async ({ page }) => {
+            await page.goto(BASE_URL)
 
-        const userName = credencials.standard_user.userName
-        const userPassword = credencials.standard_user.userPassword
+            const loginPage = new LoginPage(page)
 
-        await loginPage.fillLogin(userName, userPassword)
-        expect(loginPage.loginButton).not.toBeVisible()
+            const userName = credencials.standard_user.userName
+            const userPassword = credencials.standard_user.userPassword
+
+            await loginPage.fillLogin(userName, userPassword)
+            expect(loginPage.loginButton).not.toBeVisible()
+        })
+
+        test('Going to the PDP of a product and Add the product to the Cart @regression', async ({ page }) => {
+            const homePage = new HomePage(page)
+            const cartPage = new CartPage(page)
+            const pdpPage = new PDPPage(page)
+
+            expect(homePage.headerLabel).toBeVisible()
+
+            const elementText = items[0]
+
+            const itemElement = await homePage.findItemByName(elementText)
+            expect(itemElement).toBeVisible()
+
+            await homePage.clickItemByName(elementText)
+
+            expect(pdpPage.backToProductsButton).toBeVisible()
+
+            await pdpPage.addItemToCart("add-to-cart-sauce-labs-backpack")
+
+            await pdpPage.goToCart()
+
+            const cartItem = await cartPage.checkCartItemByName(elementText)
+            expect(cartItem).toBeVisible()
+        })
+
+        test('Adding a product to the cart throught the Home Page @regression', async ({ page }) => {
+            const homePage = new HomePage(page)
+            const cartPage = new CartPage(page)
+
+            const elementText = items[0]
+
+            expect(homePage.headerLabel).toBeVisible()
+
+            await homePage.addItemToCart("add-to-cart-sauce-labs-backpack")
+            await homePage.goToCart()
+
+            const cartItem = await cartPage.checkCartItemByName(elementText)
+            expect(cartItem).toBeVisible()
+        })
+        // ... Customer Puts a Product in the Cart ...
     })
 
-    test('Going to the PDP of a product and Add the product to the Cart @regression', async ({ page }) => {
-        const homePage = new HomePage(page)
-        const cartPage = new CartPage(page)
-        const pdpPage = new PDPPage(page)
+    test.describe("Customer checkouts a Product", () => {
 
-        expect(homePage.headerLabel).toBeVisible()
+        test.beforeEach(async ({ page }) => {
+            await page.goto(BASE_URL)
 
-        const elementText = items[0]
+            const loginPage = new LoginPage(page)
 
-        const itemElement = await homePage.findItemByName(elementText)
-        expect(itemElement).toBeVisible()
+            const userName = credencials.standard_user.userName
+            const userPassword = credencials.standard_user.userPassword
 
-        await homePage.clickItemByName(elementText)
+            await loginPage.fillLogin(userName, userPassword)
+            expect(loginPage.loginButton).not.toBeVisible()
 
-        expect(pdpPage.backToProductsButton).toBeVisible()
 
-        await pdpPage.addItemToCart("add-to-cart-sauce-labs-backpack")
+            // Putting a product in the cart:
 
-        await pdpPage.goToCart()
+            const homePage = new HomePage(page)
+            const cartPage = new CartPage(page)
 
-        const cartItem = await cartPage.checkCartItemByName(elementText)
-        expect(cartItem).toBeVisible()
-    })
+            const elementText = items[0]
 
-    test('Adding a product to the cart throught the Home Page @regression', async ({ page }) => {
-        const homePage = new HomePage(page)
-        const cartPage = new CartPage(page)
+            expect(homePage.headerLabel).toBeVisible()
 
-        const elementText = items[0]
+            await homePage.addItemToCart("add-to-cart-sauce-labs-backpack")
+            await homePage.goToCart()
 
-        expect(homePage.headerLabel).toBeVisible()
+            const cartItem = await cartPage.checkCartItemByName(elementText)
+            expect(cartItem).toBeVisible()
+        })
 
-        await homePage.addItemToCart("add-to-cart-sauce-labs-backpack")
-        await homePage.goToCart()
+        test('Checking out a product @temp', async ({ page }) => {
+            const checkoutPage = new CheckoutPage(page)
+            const cartPage = new CartPage(page)
 
-        const cartItem = await cartPage.checkCartItemByName(elementText)
-        expect(cartItem).toBeVisible()
+            await cartPage.proceedToCheckout()
+
+            const messageElement = await checkoutPage.fillYourInformation("Carl", "Sagan", "12345678")
+            expect(messageElement).toBeVisible()
+        })
     })
 })

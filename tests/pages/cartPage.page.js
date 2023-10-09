@@ -5,6 +5,7 @@ class CartPage {
         this.continueShoppingButton = page.locator("#continue-shopping")
         this.checkoutButton = this.page.locator("#checkout")
         this.cartList = this.page.locator(".cart_list")
+        this.checkoutButton = this.page.locator("#checkout")
     }
 
     async checkCartItemByName(itemName) {
@@ -16,6 +17,10 @@ class CartPage {
     }
 
     async clickCheckoutBt() {
+        await this.checkoutButton.click()
+    }
+
+    async proceedToCheckout() {
         await this.checkoutButton.click()
     }
 }
