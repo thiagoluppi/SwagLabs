@@ -100,7 +100,7 @@ test.describe("Customer Buys a Product", () => {
             expect(cartItem).toBeVisible()
         })
 
-        test('Checking out a product @temp', async ({ page }) => {
+        test('Checking out a product @regression @temp', async ({ page }) => {
             const checkoutPage = new CheckoutPage(page)
             const cartPage = new CartPage(page)
 
