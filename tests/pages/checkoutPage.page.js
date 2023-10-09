@@ -7,7 +7,7 @@ class CheckoutPage {
         this.postalCodeField = this.page.locator("#postal-code")
         this.continueButton = this.page.locator("#continue")
         this.finishButton = this.page.locator("#finish")
-        this.orderMessage = this.page.locator("#checkout_complete_container h2[class='complete-header']")
+        this.orderMessage = this.page.locator("#checkout_complete_container h2[class='complete-header']:has-text('Thank you for your order!')")
     }
 
     async fillYourInformation(name, lastName, postalCode) {
