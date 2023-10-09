@@ -20,10 +20,9 @@ test.describe("Login", () => {
 
     await loginPage.fillLogin(userName, userPassword)
     expect(loginPage.loginButton).not.toBeVisible()
-    // await page.waitForTimeout(5000)
   })
 
-  test('login with locked out user @temp @regression', async ({ page }) => {
+  test('login with locked out user @regression', async ({ page }) => {
     const loginPage = new LoginPage(page)
 
     const userName = credencials.locked_out_user.userName
@@ -32,7 +31,6 @@ test.describe("Login", () => {
 
     const checkErrorMessage = await loginPage.checkErrorMessage()
     expect(checkErrorMessage).toBe(true)
-    // await page.waitForTimeout(5000)
   })
 })
 
