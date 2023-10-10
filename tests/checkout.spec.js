@@ -45,7 +45,7 @@ test.describe("Customer Buys a Product", () => {
 
             expect(pdpPage.backToProductsButton).toBeVisible()
 
-            await pdpPage.addItemToCart("add-to-cart-sauce-labs-backpack")
+            await pdpPage.addItemToCart("backpack")
 
             await pdpPage.goToCart()
 
@@ -61,11 +61,30 @@ test.describe("Customer Buys a Product", () => {
 
             expect(homePage.headerLabel).toBeVisible()
 
-            await homePage.addItemToCart("add-to-cart-sauce-labs-backpack")
+            await homePage.addItemToCart("backpack")
             await homePage.goToCart()
 
             const cartItem = await cartPage.checkCartItemByName(elementText)
             expect(cartItem).toBeVisible()
+        })
+
+        test('Removing a product from the cart @regression', async ({ page }) => {
+            const homePage = new HomePage(page)
+            const cartPage = new CartPage(page)
+
+            const elementText = items[0]
+
+            expect(homePage.headerLabel).toBeVisible()
+
+            await homePage.addItemToCart("backpack")
+            await homePage.goToCart()
+
+            await page.pause()
+
+            await cartPage.removeItemFromCart("backpack")
+
+            const cartItem = await cartPage.checkCartItemByName(elementText)
+            expect(cartItem).not.toBeVisible()
         })
         // ... Customer Puts a Product in the Cart ...
     })
@@ -93,14 +112,14 @@ test.describe("Customer Buys a Product", () => {
 
             expect(homePage.headerLabel).toBeVisible()
 
-            await homePage.addItemToCart("add-to-cart-sauce-labs-backpack")
+            await homePage.addItemToCart("backpack")
             await homePage.goToCart()
 
             const cartItem = await cartPage.checkCartItemByName(elementText)
             expect(cartItem).toBeVisible()
         })
 
-        test('Checking out a product @regression @temp', async ({ page }) => {
+        test('Checking out a product @regression', async ({ page }) => {
             const checkoutPage = new CheckoutPage(page)
             const cartPage = new CartPage(page)
 
