@@ -7,9 +7,6 @@ class HomePage extends BasePage {
         this.productsInventoryContainer = this.page.locator(".inventory_container")
         this.productsInventoryList = this.productsInventoryContainer.locator(".inventory_list")
         this.productInventoryItem = this.productsInventoryList.locator(".inventory_item")
-        // this.sauceLabsBackpackItem = this.page.locator("")
-        // this.sauceLabsBackpackItemAddToCartButton = this.page.locator("#add-to-cart-sauce-labs-backpack")
-        // this.cartIcon = this.page.locator("#shopping_cart_container a")
     }
 
     async clickItemByName(itemName) {
