@@ -11,7 +11,7 @@
   "author": "Thiago Messias Luppi",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.38.1",
+    "@playwright/test": "^1.42.1",
     "@types/node": "^20.8.0"
   },
   "dependencies": {
