@@ -79,8 +79,6 @@ test.describe("Customer Buys a Product", () => {
             await homePage.addItemToCart("backpack")
             await homePage.goToCart()
 
-            await page.pause()
-
             await cartPage.removeItemFromCart("backpack")
 
             const cartItem = await cartPage.checkCartItemByName(elementText)
