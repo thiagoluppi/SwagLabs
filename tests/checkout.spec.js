@@ -15,7 +15,7 @@ const BASE_URL = process.env.BASE_URL
 
 test.describe("Customer Buys a Product", () => {
 
-    test.describe("Customer Puts a Product in the Cart", () => {
+    test.describe("Customer Puts a Product into the Cart", () => {
 
         test.beforeEach(async ({ page }) => {
             await page.goto(BASE_URL)
@@ -34,7 +34,7 @@ test.describe("Customer Buys a Product", () => {
             const cartPage = new CartPage(page)
             const pdpPage = new PDPPage(page)
 
-            expect(homePage.headerLabel).toBeVisible()
+            expect(homePage.productsSubHeader).toBeVisible()
 
             const elementText = items[0]
 
@@ -59,7 +59,7 @@ test.describe("Customer Buys a Product", () => {
 
             const elementText = items[0]
 
-            expect(homePage.headerLabel).toBeVisible()
+            expect(homePage.productsSubHeader).toBeVisible()
 
             await homePage.addItemToCart("backpack")
             await homePage.goToCart()
@@ -74,7 +74,7 @@ test.describe("Customer Buys a Product", () => {
 
             const elementText = items[0]
 
-            expect(homePage.headerLabel).toBeVisible()
+            expect(homePage.productsSubHeader).toBeVisible()
 
             await homePage.addItemToCart("backpack")
             await homePage.goToCart()
@@ -84,7 +84,6 @@ test.describe("Customer Buys a Product", () => {
             const cartItem = await cartPage.checkCartItemByName(elementText)
             expect(cartItem).not.toBeVisible()
         })
-        // ... Customer Puts a Product in the Cart ...
     })
 
     test.describe("Customer checkouts a Product", () => {
@@ -108,7 +107,7 @@ test.describe("Customer Buys a Product", () => {
 
             const elementText = items[0]
 
-            expect(homePage.headerLabel).toBeVisible()
+            expect(homePage.productsSubHeader).toBeVisible()
 
             await homePage.addItemToCart("backpack")
             await homePage.goToCart()
@@ -127,4 +126,40 @@ test.describe("Customer Buys a Product", () => {
             expect(messageElement).toBeVisible()
         })
     })
+
+    test.describe("Customer Manages Cart Items", () => {
+
+        test.beforeEach(async ({ page }) => {
+            await page.goto(BASE_URL);
+
+            const loginPage = new LoginPage(page);
+
+            const userName = credencials.standard_user.userName;
+            const userPassword = credencials.standard_user.userPassword;
+
+            await loginPage.fillLogin(userName, userPassword);
+            expect(loginPage.loginButton).not.toBeVisible();
+        });
+
+        test('Add and remove all items from the cart @regression', async ({ page }) => {
+            const homePage = new HomePage(page);
+            const cartPage = new CartPage(page);
+
+            // Adicionar todos os itens ao carrinho
+            await homePage.addAllItemsToCart();
+            await homePage.goToCart();
+
+            // Verificar se todos os itens foram adicionados
+            for (let item of items) {
+                const cartItem = await cartPage.checkCartItemByName(item);
+                expect(cartItem).toBeVisible();
+            }
+
+            // Remover todos os itens do carrinho
+            await cartPage.clearCart();
+
+            // Verificar se o carrinho está vazio
+            expect(await cartPage.cartList.locator('.cart_item').count()).toBe(0);
+        });
+    });
 })
