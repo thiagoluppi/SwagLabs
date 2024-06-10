@@ -39,7 +39,7 @@ test.describe("Customer can see the products images in the home page, pdp page..
             expect(imageSrcAttributeValue).toContain(itemsSrcNames)
         })
 
-        test('Checking out the image of all product in the home page @temp', async ({ page }) => {
+        test('Checking out the image of all product in the home page @regression', async ({ page }) => {
             const homePage = new HomePage(page)
 
             const namesOfItems = itemsNames
