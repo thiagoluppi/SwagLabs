@@ -7,9 +7,9 @@ class BasePage {
         this.cartIcon = this.page.locator("#shopping_cart_container a")
     }
 
-    async addItemToCart(elementName) {
+    async addItemToCart(ItemName) {
         try {
-            switch (elementName) {
+            switch (ItemName) {
                 case 'backpack':
                     await this.addToCartButton.waitFor({ state: 'visible', timeout: 5000 });
                     await this.addToCartButton.click();
@@ -21,10 +21,10 @@ class BasePage {
                     console.log("Bolt T-Shirt added to cart successfully.");
                     break;
                 default:
-                    throw new Error(`Elemento desconhecido: ${elementName}`);
+                    throw new Error(`Elemento desconhecido: ${ItemName}`);
             }
         } catch (error) {
-            console.error(`Erro ao adicionar ${elementName} ao carrinho:`, error);
+            console.error(`Erro ao adicionar ${ItemName} ao carrinho:`, error);
         }
     }
 
@@ -40,30 +40,3 @@ class BasePage {
 }
 
 module.exports = BasePage;
-
-// class BasePage {
-//     constructor(page) {
-//         this.page = page
-//         this.backpackAddToCartButton = this.page.locator("#add-to-cart-sauce-labs-backpack")
-//         this.cartIcon = this.page.locator("#shopping_cart_container a")
-//     }
-
-//     async addItemToCart(elementName) {
-//         switch (elementName) {
-//             case 'backpack':
-//                 await this.backpackAddToCartButton.click()
-//                 break
-//             case 'boltTShirt':
-//                 // await this.boltTShirtButton.click()
-//                 break
-//             default:
-//                 throw new Error(`Elemento desconhecido: ${elementName}`)
-//         }
-//     }
-
-//     async goToCart() {
-//         await this.cartIcon.click()
-//     }
-// }
-
-// module.exports = BasePage

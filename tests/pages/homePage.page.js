@@ -11,7 +11,7 @@ class HomePage extends BasePage {
 
         this.backpackAddToCartButton = this.page.locator("#add-to-cart-sauce-labs-backpack")
 
-        // Mapeamento dos botões de adicionar itens ao carrinho
+        // Mapeamento dos botões de adicionar itens ao carrinho:
         this.addToCartButtons = {
             backpack: page.locator('#add-to-cart-sauce-labs-backpack'),
             bikeLight: page.locator('#add-to-cart-sauce-labs-bike-light'),
@@ -20,6 +20,15 @@ class HomePage extends BasePage {
             onesie: page.locator('#add-to-cart-sauce-labs-onesie'),
             // testAllTheThingsTShirt: page.locator('#add-to-cart-test.allthethings()-t-shirt-(red)')
         };
+
+        // Mapeamento das imagens dos itens de adicionar ao carrinho:
+        this.itemsImages = {
+            backpack: page.locator('.inventory_list img[alt="Sauce Labs Backpack"]'),
+            bikeLight: page.locator('.inventory_list img[alt="Sauce Labs Bike Light"]'),
+            boltTShirt: page.locator('.inventory_list img[alt="Sauce Labs Bolt T-Shirt"]'),
+            fleeceJacket: page.locator('.inventory_list img[alt="Sauce Labs Fleece Jacket"]'),
+            onesie: page.locator('.inventory_list img[alt="Sauce Labs Onesie"]')
+        }
     }
 
     async clickItemByName(itemName) {
@@ -41,6 +50,11 @@ class HomePage extends BasePage {
             await this.addToCartButtons[item].click();
         }
     }
-}
 
+    async checkItemImage(itemName) {
+        const itemImage = await this.itemsImages[itemName]
+        const srcValue = await itemImage.getAttribute('src');
+        return srcValue
+    }
+}
 module.exports = HomePage
