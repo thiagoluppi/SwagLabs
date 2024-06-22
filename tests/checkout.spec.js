@@ -8,6 +8,7 @@ const CheckoutPage = require("./pages/checkoutPage.page")
 
 const credencials = require("./fixtures/credentials.json")
 const items = require("./fixtures/productContainerTexts.json")
+const productNames = require("./fixtures/productNames.json")
 
 const BASE_URL = process.env.BASE_URL
 
@@ -26,24 +27,22 @@ test.describe("Customer Buys a Product", () => {
             await loginPage.fillLogin(userName, userPassword)
             expect(loginPage.loginButton).not.toBeVisible()
 
-
             // Putting a product in the cart:
-
             const homePage = new HomePage(page)
             const cartPage = new CartPage(page)
 
-            const elementText = items[0]
+            const elementText = items[2]
 
             expect(homePage.productsSubHeader).toBeVisible()
 
-            await homePage.addItemToCart("backpack")
+            await homePage.addItemToCart(productNames[2])
             await homePage.goToCart()
 
             const cartItem = await cartPage.checkCartItemByName(elementText)
             expect(cartItem).toBeVisible()
         })
 
-        test('Checking out a product @regression', async ({ page }) => {
+        test('Checking out a product @temp', async ({ page }) => {
             const checkoutPage = new CheckoutPage(page)
             const cartPage = new CartPage(page)
 

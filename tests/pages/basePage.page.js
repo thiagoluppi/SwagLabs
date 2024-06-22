@@ -16,8 +16,8 @@ class BasePage {
                     console.log("Backpack added to cart successfully.");
                     break;
                 case 'boltTShirt':
-                    // await this.boltTShirtButton.waitFor({ state: 'visible', timeout: 5000 });
-                    // await this.boltTShirtButton.click();
+                    await this.boltTShirtButton.waitFor({ state: 'visible', timeout: 5000 });
+                    await this.boltTShirtButton.click();
                     console.log("Bolt T-Shirt added to cart successfully.");
                     break;
                 default:

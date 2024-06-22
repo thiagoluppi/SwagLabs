@@ -9,7 +9,7 @@ class HomePage extends BasePage {
         this.productsInventoryList = this.productsInventoryContainer.locator(".inventory_list")
         this.productInventoryItem = this.productsInventoryList.locator(".inventory_item")
 
-        this.backpackAddToCartButton = this.page.locator("#add-to-cart-sauce-labs-backpack")
+        // this.backpackAddToCartButton = this.page.locator("#add-to-cart-sauce-labs-backpack")
 
         // Mapeamento dos botões de adicionar itens ao carrinho:
         this.addToCartButtons = {
@@ -36,8 +36,8 @@ class HomePage extends BasePage {
     }
 
     // Esse método não pode ser removido, pois o elemento é diferente entre as pages home e pdp. Ambas usam o mesmo metodo da base page (addItemToCart), porém com localizadores diferentes.
-    async addItemToCart() {
-        await this.backpackAddToCartButton.click()
+    async addItemToCart(item) {
+        await this.addToCartButtons[item].click()
     }
 
     async findItemByName(itemName) {
@@ -47,13 +47,13 @@ class HomePage extends BasePage {
 
     async addAllItemsToCart() {
         for (let item in this.addToCartButtons) {
-            await this.addToCartButtons[item].click();
+            await this.addToCartButtons[item].click()
         }
     }
 
     async checkItemImage(itemName) {
         const itemImage = await this.itemsImages[itemName]
-        const srcValue = await itemImage.getAttribute('src');
+        const srcValue = await itemImage.getAttribute('src')
         return srcValue
     }
 }
