@@ -12,9 +12,10 @@ const BASE_URL = process.env.BASE_URL
 
 test.describe("Customer can see the products images in the home page, pdp page...", () => {
 
-    test.describe("Customer sees the image of a product in the home page", () => {
+    test.describe("Customer sees images of the products in the home page", () => {
 
         test.beforeEach(async ({ page }) => {
+            // Login
             await page.goto(BASE_URL)
 
             const loginPage = new LoginPage(page)
@@ -29,8 +30,8 @@ test.describe("Customer can see the products images in the home page, pdp page..
         test('Checking out the image of a product in the home page @regression', async ({ page }) => {
             const homePage = new HomePage(page)
 
-            const namesOfItems = itemsNames[0]
-            const itemsSrcNames = itemsSrcText[0]
+            const namesOfItems = itemsNames[2]
+            const itemsSrcNames = itemsSrcText[2]
 
             expect(homePage.productsSubHeader).toBeVisible()
 
@@ -50,6 +51,61 @@ test.describe("Customer can see the products images in the home page, pdp page..
             for (let i = 0; i < namesOfItems.length; i++) {
                 const imageSrcAttributeValue = await homePage.checkItemImage(itemsNames[i])
                 expect(imageSrcAttributeValue).toContain(itemsSrcNames[i])
+            }
+        })
+
+        test('Checking out the image of a product in the pdp page @regression', async ({ page }) => {
+            const homePage = new HomePage(page)
+
+            const namesOfItems = itemsNames[0]
+            const itemsSrcNames = itemsSrcText[0]
+
+            expect(homePage.productsSubHeader).toBeVisible()
+
+            const imageSrcAttributeValue = await homePage.checkItemImage(namesOfItems)
+
+            expect(imageSrcAttributeValue).toContain(itemsSrcNames)
+        })
+    })
+
+    test.describe("Customer do not sees the image of a product in the home page", () => {
+
+        test.beforeEach(async ({ page }) => {
+            await page.goto(BASE_URL)
+
+            const loginPage = new LoginPage(page)
+
+            const userName = credencials.problem_user.userName
+            const userPassword = credencials.problem_user.userPassword
+
+            await loginPage.fillLogin(userName, userPassword)
+            expect(loginPage.loginButton).not.toBeVisible()
+        })
+
+        test('Wrong image of a product in the home page @regression', async ({ page }) => {
+            const homePage = new HomePage(page)
+
+            const namesOfItems = itemsNames[0]
+            const itemsSrcNames = itemsSrcText[0]
+
+            expect(homePage.productsSubHeader).toBeVisible()
+
+            const imageSrcAttributeValue = await homePage.checkItemImage(namesOfItems)
+
+            expect(imageSrcAttributeValue).not.toContain(itemsSrcNames)
+        })
+
+        test('Checking out all wrong image of all product in the home page @regression', async ({ page }) => {
+            const homePage = new HomePage(page)
+
+            const namesOfItems = itemsNames
+            const itemsSrcNames = itemsSrcText
+
+            expect(homePage.productsSubHeader).toBeVisible()
+
+            for (let i = 0; i < namesOfItems.length; i++) {
+                const imageSrcAttributeValue = await homePage.checkItemImage(itemsNames[i])
+                expect(imageSrcAttributeValue).not.toContain(itemsSrcNames[i])
             }
         })
     })
